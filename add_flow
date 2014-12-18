@@ -1,0 +1,34 @@
+#!/bin/bash
+
+path=`dirname $0`
+. ${path}/ofctl.fnc
+. ${path}/ofctl.conf
+
+while getopts d:u:h OPT
+do
+    case $OPT in
+	"d" )
+	    dpid="${OPTARG}";;
+	"u" )
+	    url="${OPTARG}";;
+	"h" )
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL]"
+	    exit 0 ;;
+	* )
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL]" 1>&2
+	    exit 1 ;;
+    esac
+done
+
+shift `expr $OPTIND - 1`
+
+table_id="0"
+if [ -s /dev/stdin ]; then
+    cat - | while read line
+    do
+	set_flow add "${line}"
+    done
+else
+    set_flow add "$1"
+fi
+
