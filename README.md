@@ -53,7 +53,7 @@ If you want to see other information in flow rule, you can configure it with *of
 ### add flow rules
 **add_flow** can set single flow rule.
 ```
-$ ./add_flow {"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}
+$ ./add_flow '{"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
 ```
 
 And It can set multi flow rules with dump file made **show_flow**.
@@ -65,7 +65,7 @@ $ ./add_flow < flow_dump.txt
 ### delete flow rules
 **del_flow** can delete single flow rule.
 ```
-$ ./del_flow {"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}
+$ ./del_flow '{"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
 ```
 
 And It can delete multi flow rules with dump flow made **show_flow**.

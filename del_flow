@@ -29,5 +29,5 @@ if [ -s /dev/stdin -o -p /dev/stdin ]; then
 	set_flow delete "${line}"
     done
 else
-    set_flow delete "$1"
+    set_flow delete_strict "$1"
 fi
