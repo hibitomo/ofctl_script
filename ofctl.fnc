@@ -32,7 +32,7 @@ function flow_transform() {
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"DEC_NW_TTL"/{"type":"DEC_NW_TTL"}/g'
     flow=`echo ${flow} | sed -e "$script"`
-    script='s/"SET_FIELD: {\([^:]*\):\([^"]*\)}"/{"type":"SET_FIELD","field":"\1","value":"\2"}/g'
+    script='s/"SET_FIELD: {\([^:]*\):\([^"]*\)}"/{"type":"SET_FIELD","field":"\1","value":\2}/g'
     flow=`echo ${flow} | sed -e "$script"`    
     script='s/"PUSH_PBB:\([1234567890]*\)"/{"type":"PUSH_PBB","ethertype":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
@@ -72,6 +72,8 @@ function set_flow() {
 
     flow=`flow_transform "${flow}"`
     script+="${flow}"
+
+    echo "${script}"
 
     curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd}
 }
