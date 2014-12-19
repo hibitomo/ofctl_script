@@ -4,7 +4,9 @@ function flow_transform() {
     local flow
     local script
     flow=$1
-    script='s/"OUTPUT:\([1234567890]*\)"/{"type":"OUTPUT","port":\1}/g'
+    script='s/"OUTPUT:\([^"]*\)"/{"type":"OUTPUT","port":"\1"}/g'
+    flow=`echo ${flow} | sed -e "$script"`
+    script='s/controller/4294967293/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"PUSH_VLAN:\([1234567890]*\)"/{"type":"PUSH_VLAN","ethertype":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
