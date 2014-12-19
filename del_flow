@@ -23,7 +23,7 @@ done
 shift `expr $OPTIND - 1`
 
 table_id="0"
-if [ -s /dev/stdin ]; then
+if [ -s /dev/stdin -o -p /dev/stdin ]; then
     cat - | while read line
     do
 	set_flow delete "${line}"

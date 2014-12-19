@@ -74,7 +74,12 @@ $ ./show_flow > flow_dump.txt
 $ ./del_flow < flow_dump.txt
 ```
 
-Configuration the datapath_id
+**Tips**: Delete all flow rules
+```
+$ ./show_flow | ./del_flow
+```
+
+Configuration datapath_id
 ----------------------------
 ### Lagopus
 You can set the datapath_id with *lagopus.conf*.
