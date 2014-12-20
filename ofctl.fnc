@@ -65,15 +65,13 @@ function set_flow() {
     fi
 
     if echo ${flow} | grep -q '"table_id"' ; then
-	script='{"dpid":'${dpid}'} + '
+	script='{"dpid":"'${dpid}'"} + '
     else
-	script='{"dpid":'${dpid}'} + {"table_id":'${table_id}'} + '
+	script='{"dpid":"'${dpid}'"} + {"table_id":'${table_id}'} + '
     fi
 
     flow=`flow_transform "${flow}"`
     script+="${flow}"
-
-    echo "${script}"
 
     curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd}
 }
