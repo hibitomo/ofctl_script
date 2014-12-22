@@ -43,36 +43,46 @@ $ ./show_flow -d 1 -u 127.0.0.1:8080
 ```
 
 ### Show flow rules
-**show_flow** can show flow rules.
+*show_flow* can show and dump flow rules.
 ```
-$ ./show_flow
+$ ./show_flow # show flow rules
+$ ./show_flow > [dump file]
 ```
-If you want to see other information in flow rule, you can configure it with *ofctl.conf*.
+If you want to see other information in flow rules, you can configure them with *ofctl.conf*.
 
 
 ### add flow rules
-**add_flow** can set single flow rule.
+*add_flow* can set a flow rule.
 ```
-$ ./add_flow '{"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
+$ ./add_flow '{"table_id":0,"priority":110,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
 ```
 
-And It can set multi flow rules with dump file made **show_flow**.
+And It can set multi flow rules with dump file created *show_flow*.
 ```
-$ ./show_flow > flow_dump.txt
-$ ./add_flow < flow_dump.txt
+$ ./show_flow > flow_dump
+$ ./add_flow < flow_dump
+```
+If you dump flow rules with grep, you have to configure *ofctl.conf* to show `table_id`.
+
+**Tips**: flow integration tests
+```
+$ ./add_flow < flow_dump_appA
+$ ./add_flow < flow_dump_appB
+$ ### Your flow integration test ###
 ```
 
 ### delete flow rules
-**del_flow** can delete single flow rule.
+*del_flow* can delete the flow rule.
 ```
-$ ./del_flow '{"table_id":0,"priority":110,"packet_count":0,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
+$ ./del_flow '{"table_id":0,"priority":110,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
 ```
 
-And It can delete multi flow rules with dump flow made **show_flow**.
+And It can delete multi flow rules with dump flow created *show_flow*.
 ```
-$ ./show_flow > flow_dump.txt
-$ ./del_flow < flow_dump.txt
+$ ./show_flow > flow_dump
+$ ./del_flow < flow_dump
 ```
+If you dump flow rules with grep, you have to configure *ofctl.conf* to show `table_id`.
 
 **Tips**: Delete all flow rules
 ```
