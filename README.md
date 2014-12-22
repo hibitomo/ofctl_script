@@ -45,7 +45,7 @@ $ ./show_flow -d 1 -u 127.0.0.1:8080
 ### Show flow rules
 *show_flow* can show and dump flow rules.
 ```
-$ ./show_flow # show flow rules
+$ ./show_flow
 $ ./show_flow > [dump file]
 ```
 If you want to see other information in flow rules, you can configure them with *ofctl.conf*.
