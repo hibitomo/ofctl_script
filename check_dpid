@@ -1,0 +1,23 @@
+#!/bin/bash
+
+path=`dirname $0`
+. ${path}/ofctl.fnc
+. ${path}/ofctl.conf
+
+while getopts u:h OPT
+do
+    case $OPT in
+	"u" )
+	    url="${OPTARG}";;
+	"h" )
+	    echo "Usage: $CMDNAME [-u URL]"
+	    exit 0 ;;
+	* )
+	    echo "Usage: $CMDNAME [-u URL]" 1>&2
+	    exit 1 ;;
+    esac
+done
+
+shift `expr $OPTIND - 1`
+
+curl -s -X GET ${url}/stats/switches | jq '.[]'
