@@ -57,7 +57,10 @@ function set_flow() {
     if [ "${flow::5}" = "table" ] ; then
 	table_id="${flow:6}"
 	continue
-    elif [ "${flow::5}" = "group" -o "${flow::5}" = "meter" ] ; then
+    elif [ "${flow::5}" = "group" ] ; then
+	table_id="group"
+	continue
+    elif [ "${flow::5}" = "meter" ] ; then
 	echo "Unsupported group and meter table"
 	exit 1
     elif [ "${flow}" = "" ] ; then
@@ -66,6 +69,8 @@ function set_flow() {
 
     if echo ${flow} | grep -q '"table_id"' ; then
 	script='{"dpid":"'${dpid}'"} + '
+    elif [ "${table_id}" = "group" ] ; then
+	script='{"dpid":"'${dpid}'"} + '
     else
 	script='{"dpid":"'${dpid}'"} + {"table_id":'${table_id}'} + '
     fi
@@ -73,5 +78,9 @@ function set_flow() {
     flow=`flow_transform "${flow}"`
     script+="${flow}"
 
-    curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd}
+    if [ "${table_id}" = "group" ] ; then
+	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/groupentry/${cmd::6}
+    else
+	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd}
+    fi
 }
