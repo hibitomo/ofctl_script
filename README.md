@@ -55,6 +55,8 @@ If you want to see other information in flow rules, you can configure them with 
 *add_flow* can set a flow rule.
 ```
 $ ./add_flow '{"table_id":0,"priority":110,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
+$ ./add_flow -t group '{"type":"ALL","group_id":4,"buckets":[{"actions":["OUTPUT:1"]}]}'     # group_table
+$ ./add_flow -t meter '{"meter_id":1,"flags":["KBPS"],"bands":[{"type":"DROP","rate":1000}]}'     # meter_table
 ```
 
 And It can set multi flow rules with dump file created *show_flow*.
@@ -75,6 +77,8 @@ $ ### Your flow integration test ###
 *del_flow* can delete the flow rule.
 ```
 $ ./del_flow '{"table_id":0,"priority":110,"actions":["OUTPUT:1"],"match":{"dl_dst":"00:00:00:01:02:03/ff:ff:ff:ff:ff:ff","in_port":2}}'
+$ ./del_flow -t group '{"type":"ALL","group_id":4,"buckets":[{"actions":["OUTPUT:1"]}]}'     # group_table
+$ ./del_flow -t meter '{"meter_id":1,"flags":["KBPS"],"bands":[{"type":"DROP","rate":1000}]}'     # meter_table
 ```
 
 And It can delete multi flow rules with dump flow created *show_flow*.
