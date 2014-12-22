@@ -4,15 +4,28 @@ path=`dirname $0`
 . ${path}/ofctl.fnc
 . ${path}/ofctl.conf
 
-while getopts d:u:h OPT
+table_id="0"
+
+while getopts d:u:t:h OPT
 do
     case $OPT in
 	"d" )
 	    dpid="${OPTARG}";;
 	"u" )
 	    url="${OPTARG}";;
+	"t" )
+	    if [ "${OPTARG}" = "meter" ] ; then
+		set_flow xxx "meter"
+	    elif [ "${OPTARG}" = "group" ] ; then
+		set_flow xxx "group"
+	    elif expr "${OPTARG}" : '[0-9]*' > /dev/null ; then
+		set_flow xxx "table ${OPTARG}"
+	    else
+		echo 'Error: -t [table_id|"group"|"meter"]'
+		exit 1
+	    fi ;;
 	"h" )
-	    echo "Usage: $CMDNAME [-d DPID] [-u URL]"
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]]"
 	    exit 0 ;;
 	* )
 	    echo "Usage: $CMDNAME [-d DPID] [-u URL]" 1>&2
@@ -22,7 +35,6 @@ done
 
 shift `expr $OPTIND - 1`
 
-table_id="0"
 if [ -s /dev/stdin ]; then
     cat - | while read line
     do
@@ -31,4 +43,3 @@ if [ -s /dev/stdin ]; then
 else
     set_flow add "$1"
 fi
-
