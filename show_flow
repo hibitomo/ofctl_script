@@ -3,13 +3,15 @@
 path=`dirname $0`
 . ${path}/ofctl.conf
 
-while getopts d:u:h OPT
+while getopts d:u:f:h OPT
 do
     case $OPT in
 	"d" )
 	    dpid="${OPTARG}";;
 	"u" )
 	    url="${OPTARG}";;
+	"f")
+	    filter="${OPTARG}";;
 	"h" )
 	    echo "Usage: $CMDNAME [-d DPID] [-u URL]"
 	    exit 0 ;;
@@ -19,7 +21,13 @@ do
     esac
 done
 
-curl -s -X GET ${url}/stats/flow/${dpid} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
+
+if [ -n "${filter}" ] ; then
+    curl -s -X POST -d ${filter} ${url}/stats/flow/${dpid} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
+else
+    curl -s -X GET ${url}/stats/flow/${dpid} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
+fi
+
 sed -i -e 's/OUTPUT:4294967293/OUTPUT:controller/g' /tmp/check_flow.json
 if [ -s /tmp/check_flow.json ] ; then
     tables=( `jq -c '.table_id' < /tmp/check_flow.json | sort -n | uniq` )
