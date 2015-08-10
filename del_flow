@@ -38,7 +38,7 @@ shift `expr $OPTIND - 1`
 if [ -s /dev/stdin -o -p /dev/stdin ]; then
     cat - | while read line
     do
-	set_flow delete "${line}"
+	set_flow delete_strict "${line}"
     done
 else
     set_flow delete_strict "$1"
