@@ -5,8 +5,9 @@ path=`dirname $0`
 . ${path}/ofctl.conf
 
 table_id="0"
+cmd="delete_strict"
 
-while getopts d:u:t:h OPT
+while getopts d:u:t:fh OPT
 do
     case $OPT in
 	"d" )
@@ -24,6 +25,8 @@ do
 		echo 'Error: -t [table_id|"group"|"meter"]'
 		exit 1
 	    fi ;;
+	"f" )
+	    cmd="delete" ;;
 	"h" )
 	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]]"
 	    exit 0 ;;
@@ -38,8 +41,8 @@ shift `expr $OPTIND - 1`
 if [ -s /dev/stdin -o -p /dev/stdin ]; then
     cat - | while read line
     do
-	set_flow delete_strict "${line}"
+	set_flow ${cmd} "${line}"
     done
 else
-    set_flow delete_strict "$1"
+    set_flow ${cmd} "$1"
 fi
