@@ -28,10 +28,10 @@ do
 	"f" )
 	    cmd="delete" ;;
 	"h" )
-	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]]"
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]] [-f filter]"
 	    exit 0 ;;
 	* )
-	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]]" 1>&2
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-t [table_id|table_type]] [-f filter]" 1>&2
 	    exit 1 ;;
     esac
 done

@@ -13,10 +13,10 @@ do
 	"f")
 	    filter="${OPTARG}";;
 	"h" )
-	    echo "Usage: $CMDNAME [-d DPID] [-u URL]"
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-f filter]"
 	    exit 0 ;;
 	* )
-	    echo "Usage: $CMDNAME [-d DPID] [-u URL]" 1>&2
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL] [-f filter]" 1>&2
 	    exit 1 ;;
     esac
 done

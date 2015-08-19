@@ -33,9 +33,9 @@ function flow_transform() {
     script='s/"DEC_NW_TTL"[\t\n\r\f\v]*\([^}]\)/{"type":"DEC_NW_TTL"}\1/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"SET_FIELD: {\([^:]*\):\([^"]*\)}"/{"type":"SET_FIELD","field":"\1","value":"\2"}/g'
-    flow=`echo ${flow} | sed -e "$script"`    
+    flow=`echo ${flow} | sed -e "$script"`
     script='s/"value":"\([0123456789]*\)"/"value":\1/g'
-    flow=`echo ${flow} | sed -e "$script"`    
+    flow=`echo ${flow} | sed -e "$script"`
     script='s/"PUSH_PBB:\([1234567890]*\)"/{"type":"PUSH_PBB","ethertype":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"POP_PBB"/{"type":"POP_PBB"}/g'
