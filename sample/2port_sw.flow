@@ -1,0 +1,4 @@
+table 0
+{"table_id":0,"priority":1,"packet_count":0,"cookie":0,"actions":["OUTPUT:2"],"match":{"in_port":1}}
+{"table_id":0,"priority":1,"packet_count":0,"cookie":0,"actions":["OUTPUT:1"],"match":{"in_port":2}}
+
