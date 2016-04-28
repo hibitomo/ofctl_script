@@ -65,7 +65,7 @@ function set_flow() {
     elif [ "${flow::5}" = "meter" ] ; then
 	table_id="meter"
 	continue
-    elif [ "${flow}" = "" ] ; then
+    elif [ "${flow}" = "" -o "${flow::1}" = "#" ] ; then
 	return 0
     fi
 
