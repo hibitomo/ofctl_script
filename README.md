@@ -96,27 +96,20 @@ $ ./show_flow | ./del_flow
 Configuration datapath_id
 ----------------------------
 ### Lagopus
-You can set the datapath_id with *lagopus.conf*.
+You can set the datapath_id with *lagopus.dsl*.
 
 ```
-interface {
-    ethernet {
-        eth0;
-        eth1;
-    }
-}
-bridge-domains {
-    br0 {
-        dpid 0.00:00:00:00:00:01;
-        port {
-            eth0;
-            eth1;
-        }
-        controller {
-            127.0.0.1;
-        }
-    }
-}
+channel channel01 create -dst-addr 127.0.0.1 -protocol tcp
+controller controller01 create -channel channel01 -role equal -connection-type main
+
+interface interface0 create -type ethernet-dpdk-phy -port-number 0
+interface interface1 create -type ethernet-dpdk-phy -port-number 1
+
+port port01 create -interface interface0
+port port02 create -interface interface1
+
+bridge bridge01 create -controller controller01 -port port01 1 -port port02 2 -port -dpid 0x1
+bridge bridge01 enable
 ```
 
 ### Open vSwitch
