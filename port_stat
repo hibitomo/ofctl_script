@@ -1,0 +1,23 @@
+#!/bin/bash
+
+path=`dirname $0`
+. ${path}/ofctl.conf
+
+while getopts d:u:f:h OPT
+do
+    case $OPT in
+	"d" )
+	    dpid="${OPTARG}";;
+	"u" )
+	    url="${OPTARG}";;
+	"h" )
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL]"
+	    exit 0 ;;
+	* )
+	    echo "Usage: $CMDNAME [-d DPID] [-u URL]" 1>&2
+	    exit 1 ;;
+    esac
+done
+
+
+curl -s -X GET ${url}/stats/port/${dpid} | jq -c -M .['"'${dpid}'"'][]
