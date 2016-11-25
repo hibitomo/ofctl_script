@@ -6,13 +6,13 @@ function flow_transform() {
     flow=$1
     script='s/"OUTPUT:\([^"]*\)"/{"type":"OUTPUT","port":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
-    script='s/normal/4294967290/g'
+    script='s/NORMAL/4294967290/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/FLOOD/4294967291/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/ALL/4294967292/g'
     flow=`echo ${flow} | sed -e "$script"`
-    script='s/controller/4294967293/g'
+    script='s/CONTROLLER/4294967293/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"COPY_TTL_OUT"[\t\n\r\f\v]*\([^}]\)/{"type":"COPY_TTL_OUT"}\1/g'
     flow=`echo ${flow} | sed -e "$script"`
