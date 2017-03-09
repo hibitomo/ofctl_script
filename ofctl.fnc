@@ -10,7 +10,7 @@ function flow_transform() {
     flow=`echo ${flow} | sed -e "$script"`
     script='s/FLOOD/4294967291/g'
     flow=`echo ${flow} | sed -e "$script"`
-    script='s/ALL/4294967292/g'
+    script='s/"port":ALL/"port":4294967292/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/CONTROLLER/4294967293/g'
     flow=`echo ${flow} | sed -e "$script"`
@@ -87,6 +87,15 @@ function set_flow() {
     script+="${flow}"
 
     if [ "${table_id}" = "group" ] ; then
+	if [ "${cmd}" = "add" ] ; then
+	    group_id=`echo null | jq -c -M "${script} | .[\"group_id\"]"`
+	    jq_script=".[] | map(select(.[\"group_id\"] == ${group_id})) | length"
+	    if [ `curl -s -X GET ${url}/stats/groupdesc/${dpid} | jq "${jq_script}"` -ne 0 ] ; then
+              cmd=modify
+	    fi
+	elif [ "${cmd::6}" = "delete" ] ; then
+	    script=`echo null | jq -c -M "${script} | {dpid: .dpid, group_id: .group_id}"`
+	fi
 	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/groupentry/${cmd::6}
     elif [ "${table_id}" = "meter" ] ; then
 	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/meterentry/${cmd::6}
