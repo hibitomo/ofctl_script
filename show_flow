@@ -22,6 +22,11 @@ do
 done
 
 
+if ! ${path}/check_dpid | grep ${dpid} > /dev/null ; then
+    echo "Cannot find the swith ${dpid}"
+    exit 1
+fi
+
 if [ -n "${filter}" ] ; then
     curl -s -X POST -d ${filter} ${url}/stats/flow/${dpid} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
 else
