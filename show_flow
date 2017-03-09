@@ -28,7 +28,6 @@ else
     curl -s -X GET ${url}/stats/flow/${dpid} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
 fi
 
-sed -i -e 's/OUTPUT:4294967293/OUTPUT:controller/g' /tmp/check_flow.json
 if [ -s /tmp/check_flow.json ] ; then
     tables=( `jq -c '.table_id' < /tmp/check_flow.json | sort -n | uniq` )
 else
