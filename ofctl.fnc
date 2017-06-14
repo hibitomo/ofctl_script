@@ -46,6 +46,10 @@ function flow_transform() {
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"POP_PBB"/{"type":"POP_PBB"}/g'
     flow=`echo ${flow} | sed -e "$script"`
+    script='s/"DECAP: {cur_pkt_type:\([^,]*\), new_pkt_type:\([^}]*\)}"/{"type":"DECAP","cur_pkt_type":"\1","new_pkt_type":"\2"}/g'
+    flow=`echo ${flow} | sed -e "$script"`
+    script='s/"ENCAP: {packet_type:\([^}]*\)}"/{"type":"ENCAP","packet_type":"\1"}/g'
+    flow=`echo ${flow} | sed -e "$script"`
     script='s/"GOTO_TABLE:\([1234567890]*\)"/{"type":"GOTO_TABLE","table_id":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s@"WRITE_METADATA:\(0x[1234567890abcdef]*\)/\(0x[1234567890abcdef]*\)"@{"type":"WRITE_METADATA","metadata":"\1","metadata_mask":"\2"}@g'
