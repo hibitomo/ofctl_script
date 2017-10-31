@@ -20,4 +20,5 @@ done
 
 shift `expr $OPTIND - 1`
 
-curl -s -X GET ${url}/stats/switches # | jq '.[]'
+curl -s -X GET ${url}/stats/switches ${CURL_OPT} # | jq '.[]'
+echo ""

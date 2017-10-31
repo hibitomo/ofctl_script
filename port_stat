@@ -20,4 +20,4 @@ do
 done
 
 
-curl -s -X GET ${url}/stats/port/${dpid} | jq -c -M .['"'${dpid}'"'][]
+curl -s -X GET ${url}/stats/port/${dpid} ${CURL_OPT} | jq -c -M .['"'${dpid}'"'][]

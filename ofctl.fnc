@@ -94,16 +94,16 @@ function set_flow() {
 	if [ "${cmd}" = "add" ] ; then
 	    group_id=`echo null | jq -c -M "${script} | .[\"group_id\"]"`
 	    jq_script=".[] | map(select(.[\"group_id\"] == ${group_id})) | length"
-	    if [ `curl -s -X GET ${url}/stats/groupdesc/${dpid} | jq "${jq_script}"` -ne 0 ] ; then
+	    if [ `curl -s -X GET ${url}/stats/groupdesc/${dpid} | jq "${jq_script}" ${CURL_OPTION}` -ne 0 ] ; then
               cmd=modify
 	    fi
 	elif [ "${cmd::6}" = "delete" ] ; then
 	    script=`echo null | jq -c -M "${script} | {dpid: .dpid, group_id: .group_id}"`
 	fi
-	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/groupentry/${cmd::6}
+	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/groupentry/${cmd::6} ${CURL_OPT}
     elif [ "${table_id}" = "meter" ] ; then
-	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/meterentry/${cmd::6}
+	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/meterentry/${cmd::6} ${CURL_OPT}
     else
-	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd}
+	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd} ${CURL_OPT}
     fi
 }
