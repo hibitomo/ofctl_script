@@ -68,13 +68,13 @@ function set_flow() {
 
     if [ "${flow::5}" = "table" ] ; then
 	table_id="${flow:6}"
-	continue
+	return 0
     elif [ "${flow::5}" = "group" ] ; then
 	table_id="group"
-	continue
+	return 0
     elif [ "${flow::5}" = "meter" ] ; then
 	table_id="meter"
-	continue
+	return 0
     elif [ "${flow}" = "" -o "${flow::1}" = "#" ] ; then
 	return 0
     fi
@@ -94,7 +94,7 @@ function set_flow() {
 	if [ "${cmd}" = "add" ] ; then
 	    group_id=`echo null | jq -c -M "${script} | .[\"group_id\"]"`
 	    jq_script=".[] | map(select(.[\"group_id\"] == ${group_id})) | length"
-	    if [ `curl -s -X GET ${url}/stats/groupdesc/${dpid} | jq "${jq_script}" ${CURL_OPTION}` -ne 0 ] ; then
+	    if [ `curl -s -X GET ${url}/stats/groupdesc/${dpid} ${CURL_OPT} | jq "${jq_script}"` -ne 0 ] ; then
               cmd=modify
 	    fi
 	elif [ "${cmd::6}" = "delete" ] ; then
