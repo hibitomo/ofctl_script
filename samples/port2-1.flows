@@ -1,1 +1,0 @@
-{"table_id":0,"priority":1,"cookie":2,"actions":[{"type":"OUTPUT","port":"1"}],"match":{"in_port":2}}
