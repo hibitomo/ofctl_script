@@ -1,0 +1,12 @@
+table 0
+{"match":{"in_port":1},"actions":["OUTPUT:2"],"cookie":0,"packet_count":0,"priority":1,"table_id":0}
+{"match":{"in_port":2},"actions":["OUTPUT:1"],"cookie":0,"packet_count":0,"priority":1,"table_id":0}
+
+group table
+{"length":56,"ref_count":0,"packet_count":0,"byte_count":0,"duration_sec":6793,"duration_nsec":983107536,"bucket_stats":[{"packet_count":0,"byte_count":0}],"group_id":1,"buckets":[{"weight":0,"watch_port":4294967295,"watch_group":4294967295,"actions":["OUTPUT:1"]}],"type":"ALL"}
+{"length":72,"ref_count":0,"packet_count":0,"byte_count":0,"duration_sec":831,"duration_nsec":434354862,"bucket_stats":[{"packet_count":0,"byte_count":0},{"packet_count":0,"byte_count":0}],"group_id":2,"buckets":[{"weight":0,"watch_port":4294967295,"watch_group":4294967295,"actions":["OUTPUT:1"]},{"weight":0,"watch_port":4294967295,"watch_group":4294967295,"actions":["OUTPUT:2"]}],"type":"ALL"}
+{"length":72,"ref_count":0,"packet_count":0,"byte_count":0,"duration_sec":756,"duration_nsec":983240237,"bucket_stats":[{"packet_count":0,"byte_count":0},{"packet_count":0,"byte_count":0}],"group_id":3,"buckets":[{"weight":0,"watch_port":4294967295,"watch_group":4294967295,"actions":["OUTPUT:1"]},{"weight":0,"watch_port":4294967295,"watch_group":4294967295,"actions":["OUTPUT:2"]}],"type":"ALL"}
+
+meter table
+{"len":56,"flow_count":0,"packet_in_count":0,"byte_in_count":0,"duration_sec":18040,"duration_nsec":71290874,"band_stats":[{"packet_band_count":0,"byte_band_count":0}],"meter_id":0,"flags":["KBPS"],"bands":[{"rate":1000,"burst_size":0,"type":"DROP"}]}
+{"len":56,"flow_count":0,"packet_in_count":0,"byte_in_count":0,"duration_sec":17567,"duration_nsec":144385279,"band_stats":[{"packet_band_count":0,"byte_band_count":0}],"meter_id":1,"flags":["KBPS"],"bands":[{"rate":6000,"burst_size":0,"type":"DROP"}]}
