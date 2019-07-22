@@ -35,26 +35,22 @@ fi
 
 if [ -s /tmp/check_flow.json ] ; then
     tables=( `jq -c '.table_id' < /tmp/check_flow.json | sort -n | uniq` )
-else
-    echo "Cannot get rules."
-    exit 0
+    for table_id in ${tables[@]} ;
+    do
+	echo "table ${table_id}"
+	jq -c -M 'select(.table_id == '${table_id}') | {'${show_field}'}' < /tmp/check_flow.json
+    done
+    echo ""
 fi
 
-for table_id in ${tables[@]} ;
-do
-     echo "table ${table_id}"
-     jq -c -M 'select(.table_id == '${table_id}') | {'${show_field}'}' < /tmp/check_flow.json
-done
-echo ""
-
-curl -s -X GET ${url}/stats/groupdesc/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
+curl -s -X GET ${url}/stats/groupdesc/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"] | sort_by(.group_id) | .[]' > /tmp/check_flow.json
 if [ -s /tmp/check_flow.json ] ; then
     echo "group table"
     cat /tmp/check_flow.json
     echo ""
 fi
 
-curl -s -X GET ${url}/stats/meterconfig/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"][]' > /tmp/check_flow.json
+curl -s -X GET ${url}/stats/meterconfig/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"] | sort_by(.meter_id) | .[]' > /tmp/check_flow.json
 if [ -s /tmp/check_flow.json ] ; then
     echo "meter table"
     cat /tmp/check_flow.json
