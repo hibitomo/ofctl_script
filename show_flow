@@ -53,6 +53,7 @@ if [ -s /tmp/check_flow.json ] ; then
     while read line
     do
 	jq -c -M -s add <(echo ${line}) <(echo ${flows_array[i]})
+	let i++
     done < /tmp/check_flow2.json
     echo ""
 fi
