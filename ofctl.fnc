@@ -102,6 +102,13 @@ function set_flow() {
 	fi
 	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/groupentry/${cmd::6} ${CURL_OPT}
     elif [ "${table_id}" = "meter" ] ; then
+	if [ "${cmd}" = "add" ] ; then
+	    meter_id=`echo null | jq -c -M "${script} | .[\"meter_id\"]"`
+	    jq_script=".[] | map(select(.[\"meter_id\"] == ${meter_id})) | length"
+	    if [ `curl -s -X GET ${url}/stats/meterconfig/${dpid} ${CURL_OPT} | jq "${jq_script}"` -ne 0 ] ; then
+		cmd=modify
+	    fi
+	fi
 	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/meterentry/${cmd::6} ${CURL_OPT}
     else
 	curl -X POST -d "`echo null | jq -c -M "${script}"`" ${url}/stats/flowentry/${cmd} ${CURL_OPT}
