@@ -51,9 +51,18 @@ if [ -s /tmp/check_flow.json ] ; then
 fi
 
 curl -s -X GET ${url}/stats/meterconfig/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"] | sort_by(.meter_id) | .[]' > /tmp/check_flow.json
+curl -s -X GET ${url}/stats/meter/${dpid} ${CURL_OPT} | jq -c -M '.["'${dpid}'"] | sort_by(.meter_id) | .[]' > /tmp/check_flow2.json
 if [ -s /tmp/check_flow.json ] ; then
     echo "meter table"
-    cat /tmp/check_flow.json
+    IFS=$'\n'
+    flows_array=(`cat /tmp/check_flow.json`)
+    i=0
+
+    while read line
+    do
+	jq -c -M -s add <(echo ${line}) <(echo ${flows_array[i]})
+	let i++
+    done < /tmp/check_flow2.json
     echo ""
 fi
 
