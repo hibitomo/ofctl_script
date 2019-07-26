@@ -58,7 +58,11 @@ if [ -s /tmp/check_flow.json ] ; then
     i=0
     while read line
     do
-	jq -c -M -s add <(echo ${line}) <(echo ${flows_array[i]})
+	jq -c -M -s add <(echo ${line}) <(echo ${flows_array[i]}) > /tmp/check_flow3.json
+	while read line
+	do
+	    encap_flow_transform "${line}"
+	done < /tmp/check_flow3.json
 	let i++
     done < /tmp/check_flow2.json
     echo ""
