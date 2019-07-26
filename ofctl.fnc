@@ -46,15 +46,107 @@ function flow_transform() {
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"POP_PBB"/{"type":"POP_PBB"}/g'
     flow=`echo ${flow} | sed -e "$script"`
+
+    script='s/packet_type:GRE/packet_type:131119/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:VxLAN/packet_type:201397/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:GTPu/packet_type:198760/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:UDP/packet_type:131089/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:IPv4/packet_type:67584/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:ETHER/packet_type:0/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+
+    script='s/cur_pkt_type:ETHER,/cur_pkt_type:0,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:IPv4,/cur_pkt_type:67584,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:UDP,/cur_pkt_type:131089,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:GTPu,/cur_pkt_type:198760,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:VxLAN,/cur_pkt_type:201397,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:GRE,/cur_pkt_type:131119,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+
+    script='s/new_pkt_type:ETHER}/new_pkt_type:0}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:IPv4}/new_pkt_type:67584}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:UDP}/new_pkt_type:131089}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:GTPu}/new_pkt_type:198760}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:VxLAN}/new_pkt_type:201397}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:GRE}/new_pkt_type:131119}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:NEXT}/new_pkt_type:65534}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+
     script='s/"DECAP: {cur_pkt_type:\([^,]*\), new_pkt_type:\([^}]*\)}"/{"type":"DECAP","cur_pkt_type":"\1","new_pkt_type":"\2"}/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s/"ENCAP: {packet_type:\([^}]*\)}"/{"type":"ENCAP","packet_type":"\1"}/g'
     flow=`echo ${flow} | sed -e "$script"`
+
     script='s/"GOTO_TABLE:\([1234567890]*\)"/{"type":"GOTO_TABLE","table_id":\1}/g'
     flow=`echo ${flow} | sed -e "$script"`
     script='s@"WRITE_METADATA:\(0x[1234567890abcdef]*\)/\(0x[1234567890abcdef]*\)"@{"type":"WRITE_METADATA","metadata":"\1","metadata_mask":"\2"}@g'
     flow=`echo ${flow} | sed -e "$script"`
 
+    echo "${flow}"
+}
+
+function encap_flow_transform() {
+    local flow
+    local script
+    flow=$1
+    
+    script='s/packet_type:131119/packet_type:GRE/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:201397/packet_type:VxLAN/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:198760/packet_type:GTPu/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:131089/packet_type:UDP/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:67584/packet_type:IPv4/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/packet_type:0/packet_type:ETHER/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+
+    script='s/cur_pkt_type:0,/cur_pkt_type:ETHER,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:67584,/cur_pkt_type:IPv4,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:131089,/cur_pkt_type:UDP,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:198760,/cur_pkt_type:GTPu,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:201397,/cur_pkt_type:VxLAN,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/cur_pkt_type:131119,/cur_pkt_type:GRE,/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+
+    script='s/new_pkt_type:0}/new_pkt_type:ETHER}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:67584}/new_pkt_type:IPv4}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:131089}/new_pkt_type:UDP}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:198760}/new_pkt_type:GTPu}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:201397}/new_pkt_type:VxLAN}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:131119}/new_pkt_type:GRE}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    script='s/new_pkt_type:65534}/new_pkt_type:NEXT}/g'
+    flow=`echo ${flow} | sed -e "${script}"`
+    
     echo "${flow}"
 }
 

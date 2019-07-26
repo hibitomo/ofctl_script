@@ -2,6 +2,7 @@
 
 path=`dirname $0`
 . ${path}/ofctl.conf
+. ${path}/ofctl.fnc
 
 while getopts d:u:f:h OPT
 do
@@ -38,7 +39,12 @@ if [ -s /tmp/check_flow.json ] ; then
     for table_id in ${tables[@]} ;
     do
 	echo "table ${table_id}"
-	jq -c -M 'select(.table_id == '${table_id}') | {'${show_field}'}' < /tmp/check_flow.json
+	jq -c -M 'select(.table_id == '${table_id}') | {'${show_field}'}' < /tmp/check_flow.json > /tmp/check_flow2.json
+	while read line
+	do
+	    encap_flow_transform "${line}"
+	done < /tmp/check_flow2.json
+	echo ${flow}
     done
     echo ""
 fi

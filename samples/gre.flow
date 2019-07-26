@@ -1,0 +1,5 @@
+table 0
+{"match":{"dl_type":2048,"in_port":1},"actions":["ENCAP: {packet_type:GRE}","SET_FIELD: {gre_key:1}","ENCAP: {packet_type:IPv4}","SET_FIELD: {ipv4_src:10.0.0.1}","SET_FIELD: {ipv4_dst:172.21.0.2}","SET_NW_TTL:64","ENCAP: {packet_type:ETHER}","SET_FIELD: {eth_src:12:22:22:22:22:22}","SET_FIELD: {eth_dst:22:33:33:33:33:33}","OUTPUT:2"],"cookie":0,"packet_count":0,"priority":0,"table_id":0}
+{"match":{"dl_type":2048,"nw_proto":47,"in_port":2},"actions":["DECAP: {cur_pkt_type:ETHER, new_pkt_type:IPv4}","DECAP: {cur_pkt_type:IPv4, new_pkt_type:GRE}","DECAP: {cur_pkt_type:GRE, new_pkt_type:NEXT}","OUTPUT:1"],"cookie":0,"packet_count":0,"priority":0,"table_id":0}
+
+
